@@ -1,4 +1,4 @@
-package casia.isiteam.sensitivedetection.filter.internals;
+package casia.isiteam.sensitivedetection.algorithm.internals;
 
 import java.util.ArrayList;
 import java.util.HashMap;

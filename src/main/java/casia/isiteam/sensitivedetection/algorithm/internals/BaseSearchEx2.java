@@ -1,32 +1,28 @@
-package casia.isiteam.sensitivedetection.filter.internals;
+package casia.isiteam.sensitivedetection.algorithm.internals;
 
-import casia.isiteam.sensitivedetection.filter.NumHelper;
+
+import casia.isiteam.sensitivedetection.algorithm.NumHelper;
 
 import static java.util.stream.Collectors.toMap;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class BaseSearchEx {
-    protected int[] _dict;
-    protected int[] _first;
-    protected int[] _min;
-    protected int[] _max;
-
-    protected IntDictionary[] _nextIndex;
-    protected int[] _end;
-    protected int[] _resultIndex;
+public abstract class BaseSearchEx2 {
     protected String[] _keywords;
+    protected int[][] _guides;
+    protected int[] _key;
+    protected int[] _next;
+    protected int[] _check;
+    protected int[] _dict;
 
     /**
-     * 保存, 修改于2020-08-06，使用utf-8保存，与以前数据可能会不同
+     * 保存, 修改于2020-08-06，使用utf-8保存与以前保存的数据不同
      *
      * @param filePath 文件地址
      * @throws IOException
@@ -46,45 +42,32 @@ public class BaseSearchEx {
             bw.write(bytes);
         }
 
+        bw.write(NumHelper.serialize(_guides.length));
+        for (int[] guide : _guides) {
+            bw.write(NumHelper.serialize(guide.length));
+            for (int item : guide) {
+                bw.write(NumHelper.serialize(item));
+            }
+        }
+
+        bw.write(NumHelper.serialize(_key.length));
+        for (int item : _key) {
+            bw.write(NumHelper.serialize(item));
+        }
+
+        bw.write(NumHelper.serialize(_next.length));
+        for (int item : _next) {
+            bw.write(NumHelper.serialize(item));
+        }
+
+        bw.write(NumHelper.serialize(_check.length));
+        for (int item : _check) {
+            bw.write(NumHelper.serialize(item));
+        }
+
         bw.write(NumHelper.serialize(_dict.length));
         for (int item : _dict) {
             bw.write(NumHelper.serialize(item));
-        }
-
-        bw.write(NumHelper.serialize(_first.length));
-        for (int item : _first) {
-            bw.write(NumHelper.serialize(item));
-        }
-        bw.write(NumHelper.serialize(_min.length));
-        for (int item : _min) {
-            bw.write(NumHelper.serialize(item));
-        }
-        bw.write(NumHelper.serialize(_max.length));
-        for (int item : _max) {
-            bw.write(NumHelper.serialize(item));
-        }
-        bw.write(NumHelper.serialize(_end.length));
-        for (int item : _end) {
-            bw.write(NumHelper.serialize(item));
-        }
-        bw.write(NumHelper.serialize(_resultIndex.length));
-        for (int item : _resultIndex) {
-            bw.write(NumHelper.serialize(item));
-        }
-
-        bw.write(NumHelper.serialize(_nextIndex.length));
-        for (int i = 0; i < _nextIndex.length; i++) {
-            int[] keys = _nextIndex[i].getKeys();
-            bw.write(NumHelper.serialize(keys.length));
-            for (int item : keys) {
-                bw.write(NumHelper.serialize(item));
-            }
-
-            int[] values = _nextIndex[i].getValues();
-            bw.write(NumHelper.serialize(values.length));
-            for (int item : values) {
-                bw.write(NumHelper.serialize(item));
-            }
         }
     }
 
@@ -111,59 +94,38 @@ public class BaseSearchEx {
             br.read(bytes, 0, l);
             _keywords[i] = new String(bytes,"utf-8");
         }
+        length = NumHelper.read(br);
+        _guides = new int[length][];
+        for (int i = 0; i < length; i++) {
+            int length2 = NumHelper.read(br);
+            _guides[i] = new int[length2];
+            for (int j = 0; j < length2; j++) {
+                _guides[i][j] = NumHelper.read(br);
+            }
+        }
+
+        length = NumHelper.read(br);
+        _key = new int[length];
+        for (int i = 0; i < length; i++) {
+            _key[i] = NumHelper.read(br);
+        }
+
+        length = NumHelper.read(br);
+        _next = new int[length];
+        for (int i = 0; i < length; i++) {
+            _next[i] = NumHelper.read(br);
+        }
+
+        length = NumHelper.read(br);
+        _check = new int[length];
+        for (int i = 0; i < length; i++) {
+            _check[i] = NumHelper.read(br);
+        }
 
         length = NumHelper.read(br);
         _dict = new int[length];
         for (int i = 0; i < length; i++) {
             _dict[i] = NumHelper.read(br);
-        }
-
-        length = NumHelper.read(br);
-        _first = new int[length];
-        for (int i = 0; i < length; i++) {
-            _first[i] = NumHelper.read(br);
-        }
-
-        length = NumHelper.read(br);
-        _min = new int[length];
-        for (int i = 0; i < length; i++) {
-            _min[i] = NumHelper.read(br);
-        }
-
-        length = NumHelper.read(br);
-        _max = new int[length];
-        for (int i = 0; i < length; i++) {
-            _max[i] = NumHelper.read(br);
-        }
-
-        length = NumHelper.read(br);
-        _end = new int[length];
-        for (int i = 0; i < length; i++) {
-            _end[i] = NumHelper.read(br);
-        }
-
-        length = NumHelper.read(br);
-        _resultIndex = new int[length];
-        for (int i = 0; i < length; i++) {
-            _resultIndex[i] = NumHelper.read(br);
-        }
-
-        length = NumHelper.read(br);
-        _nextIndex = new IntDictionary[length];
-        for (int i = 0; i < length; i++) {
-            int l2 = NumHelper.read(br);
-            int[] keys = new int[l2];
-            for (int j = 0; j < keys.length; j++) {
-                keys[j] = NumHelper.read(br);
-            }
-
-            l2 = NumHelper.read(br);
-            int[] values = new int[l2];
-            for (int j = 0; j < values.length; j++) {
-                values[j] = NumHelper.read(br);
-            }
-            _nextIndex[i] = new IntDictionary();
-            _nextIndex[i].SetDictionary(keys, values);
         }
     }
 
@@ -174,12 +136,13 @@ public class BaseSearchEx {
      */
     public void SetKeywords(List<String> keywords) {
         _keywords = keywords.toArray(new String[0]);
+
         SetKeywords();
     }
 
     private void SetKeywords() {
         TrieNode root = new TrieNode();
-        Map<Integer, List<TrieNode>> allNodeLayers = new Hashtable<Integer, List<TrieNode>>();
+        Map<Integer,List<TrieNode>> allNodeLayers=new Hashtable<Integer,List<TrieNode>>();
         for (int i = 0; i < _keywords.length; i++) {
             String p = _keywords[i];
             TrieNode nd = root;
@@ -187,36 +150,35 @@ public class BaseSearchEx {
                 nd = nd.Add(p.charAt(j));
                 if (nd.Layer == 0) {
                     nd.Layer = j + 1;
-                    if (allNodeLayers.containsKey(nd.Layer) == false) {
-                        List<TrieNode> nodes = new ArrayList<TrieNode>();
+                    if(allNodeLayers.containsKey(nd.Layer)==false){
+                        List<TrieNode> nodes=new ArrayList<TrieNode>();
                         nodes.add(nd);
                         allNodeLayers.put(nd.Layer, nodes);
-                    } else {
+                    }else {
                         allNodeLayers.get(nd.Layer).add(nd);
-                    }
-                }
+                    }                }
             }
             nd.SetResults(i);
         }
 
         List<TrieNode> allNode = new ArrayList<TrieNode>();
         allNode.add(root);
-        for (int i = 0; i < allNodeLayers.size(); i++) { // 注意 这里不能用 keySet()
-            List<TrieNode> nodes = allNodeLayers.get(i + 1);
+        for (int i = 0; i < allNodeLayers.size(); i++) { //注意 这里不能用 keySet()
+            List<TrieNode> nodes = allNodeLayers.get(i+1);
             for (int j = 0; j < nodes.size(); j++) {
                 allNode.add(nodes.get(j));
             }
         }
         allNodeLayers.clear();
-        allNodeLayers = null;
+        allNodeLayers=null;
 
+        
         for (int i = 1; i < allNode.size(); i++) {
             TrieNode nd = allNode.get(i);
             nd.Index = i;
             TrieNode r = nd.Parent.Failure;
             Character c = nd.Char;
-            while (r != null && !r.m_values.containsKey(c))
-                r = r.Failure;
+            while (r != null && !r.m_values.containsKey(c)) r = r.Failure;
             if (r == null)
                 nd.Failure = root;
             else {
@@ -227,23 +189,25 @@ public class BaseSearchEx {
             }
         }
         root.Failure = root;
+ 
 
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i < allNode.size(); i++) {
             stringBuilder.append(allNode.get(i).Char);
         }
-        CreateDict(stringBuilder.toString());
+        Integer length = CreateDict(stringBuilder.toString());
         stringBuilder = null;
 
-        List<TrieNode2Ex> allNode2 = new ArrayList<TrieNode2Ex>();
+        List<TrieNodeEx> allNode2 = new ArrayList<TrieNodeEx>();
         for (int i = 0; i < allNode.size(); i++) {
-            TrieNode2Ex nd = new TrieNode2Ex();
+            TrieNodeEx nd = new TrieNodeEx();
             nd.Index = i;
             allNode2.add(nd);
         }
         for (int i = 0; i < allNode2.size(); i++) {
             TrieNode oldNode = allNode.get(i);
-            TrieNode2Ex newNode = allNode2.get(i);
+            TrieNodeEx newNode = allNode2.get(i);
+            newNode.Char = _dict[oldNode.Char];
 
             for (Character key : oldNode.m_values.keySet()) {
                 TrieNode nd = oldNode.m_values.get(key);
@@ -252,7 +216,6 @@ public class BaseSearchEx {
             oldNode.Results.forEach(item -> {
                 newNode.SetResults(item);
             });
-
             oldNode = oldNode.Failure;
             while (oldNode != root) {
                 for (Character key : oldNode.m_values.keySet()) {
@@ -271,58 +234,52 @@ public class BaseSearchEx {
         allNode = null;
         root = null;
 
-        List<Integer> min = new ArrayList<Integer>();
-        List<Integer> max = new ArrayList<Integer>();
-        List<Map<Integer, Integer>> nextIndexs = new ArrayList<Map<Integer, Integer>>();
-        List<Integer> end = new ArrayList<Integer>();
-        end.add(0);
-        List<Integer> resultIndex = new ArrayList<Integer>();
-        for (int i = 0; i < allNode2.size(); i++) {
-            Map<Integer, Integer> dict = new HashMap<Integer, Integer>();
-            TrieNode2Ex node = allNode2.get(i);
-            min.add(node.minflag);
-            max.add(node.maxflag);
+        build(allNode2, length);
+    }
 
-            if (i > 0) {
-                for (Integer key : node.m_values.keySet()) {
-                    dict.put(key, node.m_values.get(key).Index);
-                }
-            }
-            for (int j = 0; j < node.Results.size(); j++) {
-                resultIndex.add(node.Results.get(j));
-            }
-            end.add(resultIndex.size());
-            nextIndexs.add(dict);
+    private void build(List<TrieNodeEx> nodes, int length) {
+        Integer[] has = new Integer[0x00FFFFFF];
+        boolean[] seats = new boolean[0x00FFFFFF];
+        boolean[] seats2 = new boolean[0x00FFFFFF];
+        Integer start = 1;
+        Integer oneStart = 1;
+        for (int i = 0; i < nodes.size(); i++) {
+            TrieNodeEx node = nodes.get(i);
+            node.Rank(oneStart, start, seats, seats2, has);
         }
-        int[] first = new int[Character.MAX_VALUE + 1];
-        for (Integer key : allNode2.get(0).m_values.keySet()) {
-            TrieNode2Ex nd = allNode2.get(0).m_values.get(key);
-            first[(int) key] = nd.Index;
+        Integer maxCount = has.length - 1;
+        while (has[maxCount] == null) {
+            maxCount--;
+        }
+        length = maxCount + length + 1;
+
+        // length = root.Rank(has) + length + 1;
+        _key = new int[length];
+        _next = new int[length];
+        _check = new int[length];
+        List<Integer[]> guides = new ArrayList<Integer[]>();
+        guides.add(new Integer[] { 0 });
+        for (int i = 0; i < length; i++) {
+            if (has[i] == null)
+                continue;
+            TrieNodeEx item = nodes.get(has[i]);
+            _key[i] = item.Char;
+            _next[i] = item.Next;
+            if (item.End) {
+                _check[i] = guides.size();
+                Integer[] result = item.Results.toArray(new Integer[0]);
+                guides.add(result);
+            }
+        }
+        _guides = new int[guides.size()][];
+        for (int i = 0; i < guides.size(); i++) {
+            Integer[] array = guides.get(i);
+            _guides[i] = new int[array.length];
+            for (int j = 0; j < array.length; j++) {
+                _guides[i][j] = array[j];
+            }
         }
 
-        _first = first;
-        _min = new int[min.size()];
-        _max = new int[min.size()];
-        for (int i = 0; i < min.size(); i++) {
-            _min[i] = (int) (min.get(i));
-            _max[i] = (int) (max.get(i));
-        }
-        _nextIndex = new IntDictionary[nextIndexs.size()];
-        for (int i = 0; i < nextIndexs.size(); i++) {
-            IntDictionary dictionary = new IntDictionary();
-            dictionary.SetDictionary(nextIndexs.get(i));
-            _nextIndex[i] = dictionary;
-        }
-        _end = new int[end.size()];
-        for (int i = 0; i < end.size(); i++) {
-            _end[i] = (int) (end.get(i));
-        }
-        _resultIndex = new int[resultIndex.size()];
-        for (int i = 0; i < resultIndex.size(); i++) {
-            _resultIndex[i] = (int) (resultIndex.get(i));
-        }
-        allNode2.clear();
-        allNode2 = null;
     }
 
     private int CreateDict(String keywords) {

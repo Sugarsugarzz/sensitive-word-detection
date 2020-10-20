@@ -1,23 +1,22 @@
 package casia.isiteam.sensitivedetection;
 
-import casia.isiteam.sensitivedetection.filter.IllegalWordsSearch;
-import casia.isiteam.sensitivedetection.filter.IllegalWordsSearchResult;
+import casia.isiteam.sensitivedetection.algorithm.IllegalWordsSearch;
+import casia.isiteam.sensitivedetection.algorithm.IllegalWordsSearchResult;
+import casia.isiteam.sensitivedetection.service.SensitiveWordService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 @SpringBootTest
 class SensitivedetectionApplicationTests {
+
+    @Autowired
+    SensitiveWordService sensitiveWordService;
 
     @Test
     void test_IllegalWordsSearch() {
@@ -112,5 +111,32 @@ class SensitivedetectionApplicationTests {
 //            System.out.println("Replace is Error.");
 //        }
 //    }
+
+    /**
+     * 获取所有敏感词
+     */
+    @Test
+    void test_get_all_keywords() {
+        List<String> allKeywords = sensitiveWordService.findAllKeywords();
+        System.out.println(allKeywords);
+    }
+
+    /**
+     * dict下敏感词入库
+     */
+    @Test
+    void test_save_keywords_from_txt() {
+        Set<String> words = new HashSet<>();
+        List<String> filenames = new ArrayList<>(Arrays.asList("kb_words.txt", "sensitive_dict.txt"));
+        for (String filename : filenames) {
+            try (Stream<String> stream = Files.lines(ResourceUtils.getFile("classpath:dict/" + filename).toPath())) {
+                stream.forEach(words::add);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        sensitiveWordService.saveKeywords(words);
+    }
 
 }

@@ -1,4 +1,4 @@
-package casia.isiteam.sensitivedetection.filter.internals;
+package casia.isiteam.sensitivedetection.algorithm.internals;
 
 import static java.util.stream.Collectors.toMap;
 

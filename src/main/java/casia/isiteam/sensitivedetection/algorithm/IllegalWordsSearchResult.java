@@ -1,4 +1,4 @@
-package casia.isiteam.sensitivedetection.filter;
+package casia.isiteam.sensitivedetection.algorithm;
 
 
 public class IllegalWordsSearchResult

@@ -1,4 +1,4 @@
-package casia.isiteam.sensitivedetection.common;
+package casia.isiteam.sensitivedetection.common.lang;
 
 import lombok.Data;
 

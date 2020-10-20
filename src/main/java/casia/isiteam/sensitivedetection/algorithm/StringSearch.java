@@ -1,7 +1,7 @@
-package casia.isiteam.sensitivedetection.filter;
+package casia.isiteam.sensitivedetection.algorithm;
 
-import casia.isiteam.sensitivedetection.filter.internals.BaseSearch;
-import casia.isiteam.sensitivedetection.filter.internals.TrieNode2;
+import casia.isiteam.sensitivedetection.algorithm.internals.BaseSearch;
+import casia.isiteam.sensitivedetection.algorithm.internals.TrieNode2;
 
 import java.util.ArrayList;
 import java.util.List;

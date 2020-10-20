@@ -1,6 +1,6 @@
-package casia.isiteam.sensitivedetection.filter;
+package casia.isiteam.sensitivedetection.algorithm;
 
-import casia.isiteam.sensitivedetection.filter.internals.BaseSearchEx;
+import casia.isiteam.sensitivedetection.algorithm.internals.BaseSearchEx;
 
 import java.io.InputStream;
 import java.io.FileOutputStream;

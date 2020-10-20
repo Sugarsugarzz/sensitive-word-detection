@@ -1,4 +1,4 @@
-package casia.isiteam.sensitivedetection.filter;
+package casia.isiteam.sensitivedetection.algorithm;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

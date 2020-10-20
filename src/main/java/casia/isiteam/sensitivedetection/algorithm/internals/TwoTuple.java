@@ -1,4 +1,4 @@
-package casia.isiteam.sensitivedetection.filter.internals;
+package casia.isiteam.sensitivedetection.algorithm.internals;
 
 public class TwoTuple<A, B> {
     public A Item1;
