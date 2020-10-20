@@ -24,7 +24,7 @@ public class IndexController {
     static {
         List<String> sensitive_words = new ArrayList<>();
 
-        List<String> filenames = new ArrayList<>(Arrays.asList("kb_opinions.txt", "kb_phrases.txt", "kb_words.txt", "sensitive_dict.txt"));
+        List<String> filenames = new ArrayList<>(Arrays.asList("kb_words.txt", "sensitive_dict.txt"));
 //        List<String> filenames = new ArrayList<>(Arrays.asList("words.txt"));
         for (String filename : filenames) {
             try (Stream<String> stream = Files.lines(ResourceUtils.getFile("classpath:dict/" + filename).toPath())) {
