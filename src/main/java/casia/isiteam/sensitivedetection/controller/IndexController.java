@@ -4,6 +4,7 @@ import casia.isiteam.sensitivedetection.common.Result;
 import casia.isiteam.sensitivedetection.filter.IllegalWordsSearch;
 import casia.isiteam.sensitivedetection.filter.IllegalWordsSearchResult;
 import casia.isiteam.sensitivedetection.filter.StringSearch;
+import casia.isiteam.sensitivedetection.model.Sensitivity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.ResourceUtils;
@@ -41,32 +42,18 @@ public class IndexController {
     @PostMapping("/filter2")
     @ApiOperation("跳词版")
     public Result index(String content) {
-
-        Set<String> result = new HashSet<>();
+        List<String> keywords = new ArrayList<>();
         List<IllegalWordsSearchResult> words = illegalWordsSearch.FindAll(content);
-        words.forEach(word -> {
-            result.add(word.MatchKeyword);
-        });
-
+        words.forEach(word -> keywords.add(word.MatchKeyword));
         String replace = illegalWordsSearch.Replace(content);
-
-        System.out.println(content);
-        System.out.println(replace);
-        System.out.println("===========");
-        return Result.success(result.size());
+        return Result.success(new Sensitivity(content, replace, keywords, 90.0));
     }
 
     @PostMapping("/filter")
     @ApiOperation("非跳词版")
     public Result index2(String content) {
-
         List<String> words = stringSearch.FindAll(content);
         String replace = stringSearch.Replace(content);
-        System.out.println(content);
-        System.out.println(words);
-        System.out.println(replace);
-        System.out.println("======================");
-
-        return Result.success(words.size());
+        return Result.success(new Sensitivity(content, replace, words, 90.0));
     }
 }

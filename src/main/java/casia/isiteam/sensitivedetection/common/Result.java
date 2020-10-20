@@ -9,7 +9,7 @@ public class Result implements Serializable {
 
     private int code;  // 200是正常，非200表示异常
     private String msg;
-    private Object sensitivity;
+    private Object data;
 
     public static Result success(Object data) {
         return success(200, "操作成功!", data);
@@ -19,7 +19,7 @@ public class Result implements Serializable {
         Result r = new Result();
         r.setCode(code);
         r.setMsg(msg);
-        r.setSensitivity(data);
+        r.setData(data);
         return r;
     }
 
@@ -31,7 +31,7 @@ public class Result implements Serializable {
         Result r = new Result();
         r.setCode(code);
         r.setMsg(msg);
-        r.setSensitivity(data);
+        r.setData(data);
         return r;
     }
 }
