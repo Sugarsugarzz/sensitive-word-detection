@@ -9,6 +9,7 @@ import casia.isiteam.sensitivedetection.service.SensitiveWordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class IndexController {
     SensitiveWordService sensitiveWordService;
 
 
-    @PostMapping("/filter2")
+    @PostMapping("/sensitive2")
     @ApiOperation("跳词版")
     public Result index(String content) {
         // 初始化搜索器
@@ -38,7 +39,7 @@ public class IndexController {
         return Result.success(new Sensitivity(content, replace, keywords, 90.0));
     }
 
-    @PostMapping("/filter")
+    @PostMapping("/sensitive")
     @ApiOperation("非跳词版")
     public Result index2(String content) {
         // 初始化搜索器
@@ -47,10 +48,12 @@ public class IndexController {
         // 检测敏感词
         List<String> words = searcher.FindAll(content);
         String replace = searcher.Replace(content);
-        return Result.success(new Sensitivity(content, replace, words, 90.0));
+        // 统计 * 字符的占比
+        double ratio = (double) Arrays.stream(replace.split("\\*")).count() / content.replaceAll("[^a-zA-Z0-9\\u4E00-\\u9FA5]", "").length();
+        return Result.success(new Sensitivity(content, replace, words, (double) Math.round(ratio * 100) / 100));
     }
 
-    @RequestMapping("/keywords")
+    @GetMapping("/keywords")
     @ApiOperation("获取所有敏感词")
     public Object keywords() {
         return sensitiveWordService.findAllKeywords();
