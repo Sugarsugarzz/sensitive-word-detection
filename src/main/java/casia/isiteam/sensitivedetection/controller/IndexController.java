@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -32,9 +33,8 @@ public class IndexController {
         IllegalWordsSearch searcher = new IllegalWordsSearch();
         searcher.SetKeywords(sensitiveWordService.findAllKeywords());
         // 检测敏感词
-        List<String> keywords = new ArrayList<>();
         List<IllegalWordsSearchResult> words = searcher.FindAll(content);
-        words.forEach(word -> keywords.add(word.MatchKeyword));
+        List<String> keywords = words.stream().map(word -> word.MatchKeyword).distinct().collect(Collectors.toList());
         String replace = searcher.Replace(content);
         return Result.success(new Sensitivity(content, replace, keywords, 90.0));
     }
