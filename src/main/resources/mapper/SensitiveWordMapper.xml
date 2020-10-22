@@ -3,20 +3,21 @@
 
 <mapper namespace="casia.isiteam.sensitivedetection.mapper.SensitiveWordMapper">
 
-    <select id="findAllKeywords" resultType="java.lang.String">
-        SELECT keyword
-        FROM sensitive_words
+    <select id="findAllKeywords" resultType="casia.isiteam.sensitivedetection.model.SensitiveWord">
+        SELECT w.id as id, w.keyword as keyword, w.aid as aid, a.aspect as aspect, a.val as val
+        FROM sensitive_words w, sensitive_words_aspects a
+        WHERE w.aid = a.id
     </select>
 
-    <insert id="saveKeywords" parameterType="java.lang.String">
-        <if test="keywords.size() == 0">
+    <insert id="saveKeywords" parameterType="casia.isiteam.sensitivedetection.model.SensitiveWord">
+        <if test="words.size() == 0">
             SELECT 'x'
         </if>
-        <if test="keywords.size() != 0">
-            INSERT IGNORE INTO sensitive_words (keyword)
+        <if test="words.size() != 0">
+            INSERT IGNORE INTO sensitive_words (keyword, aid)
             VALUES
-            <foreach collection="keywords" item="keyword" separator=",">
-                (#{keyword})
+            <foreach collection="words" item="word" separator=",">
+                (#{word.keyword}, #{word.aid})
             </foreach>
         </if>
     </insert>

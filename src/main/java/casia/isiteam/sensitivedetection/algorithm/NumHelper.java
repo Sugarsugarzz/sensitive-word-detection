@@ -7,10 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * @author yongxuan.he
- * @date 2020/3/17
- */
 public class NumHelper {
 
     public enum SerializableType {

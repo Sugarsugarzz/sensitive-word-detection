@@ -1,5 +1,6 @@
 package casia.isiteam.sensitivedetection.algorithm.internals;
 
+
 import casia.isiteam.sensitivedetection.algorithm.NumHelper;
 
 import static java.util.stream.Collectors.toMap;

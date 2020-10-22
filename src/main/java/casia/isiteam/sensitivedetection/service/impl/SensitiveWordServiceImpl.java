@@ -16,12 +16,12 @@ public class SensitiveWordServiceImpl implements SensitiveWordService {
     SensitiveWordMapper sensitiveWordMapper;
 
     @Override
-    public List<String> findAllKeywords() {
+    public List<SensitiveWord> findAllKeywords() {
         return sensitiveWordMapper.findAllKeywords();
     }
 
     @Override
-    public void saveKeywords(Collection<String> keywords) {
+    public void saveKeywords(Collection<SensitiveWord> keywords) {
         sensitiveWordMapper.saveKeywords(keywords);
     }
 }

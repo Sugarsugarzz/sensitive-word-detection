@@ -1,5 +1,6 @@
 package casia.isiteam.sensitivedetection.mapper;
 
+import casia.isiteam.sensitivedetection.model.SensitiveWord;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Repository
 public interface SensitiveWordMapper {
 
-    List<String> findAllKeywords();
+    List<SensitiveWord> findAllKeywords();
 
-    void saveKeywords(@Param("keywords") Collection<String> keywords);
+    void saveKeywords(@Param("words") Collection<SensitiveWord> words);
 }

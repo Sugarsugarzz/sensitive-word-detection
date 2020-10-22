@@ -1,11 +1,13 @@
 package casia.isiteam.sensitivedetection.service;
 
+import casia.isiteam.sensitivedetection.model.SensitiveWord;
+
 import java.util.Collection;
 import java.util.List;
 
 public interface SensitiveWordService {
 
-    List<String> findAllKeywords();
+    List<SensitiveWord> findAllKeywords();
 
-    void saveKeywords(Collection<String> keywords);
+    void saveKeywords(Collection<SensitiveWord> keywords);
 }
