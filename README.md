@@ -92,7 +92,7 @@
               "发轮功",
               "轮功"
           ],
-          "sensitivity": 92.07
+          "sensitivity": 96.32
       }
   }
   ```

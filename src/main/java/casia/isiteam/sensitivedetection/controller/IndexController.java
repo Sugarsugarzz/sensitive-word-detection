@@ -8,9 +8,7 @@ import casia.isiteam.sensitivedetection.service.SensitiveWordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,8 +22,8 @@ public class IndexController {
     SensitiveWordService sensitiveWordService;
 
     @PostMapping("/sensitive")
-    @ApiOperation("非跳词版敏感词检测")
-    public Result index2(String content) {
+    @ApiOperation("敏感度检测与计算（非跳词版）")
+    public Result index(@RequestParam("content") String content) {
         // 获取敏感词
         List<SensitiveWord> allKeywords = sensitiveWordService.findAllKeywords();
         // 初始化检测器
@@ -43,6 +41,9 @@ public class IndexController {
         double result = (double) Math.round((maxSensitiveVal * 0.85 + ratio * 100 * 0.15) * 100) / 100;
 
         System.out.println("========================================");
+        System.out.println("待检测文本：" + content);
+        System.out.println("替换后文本：" + replace);
+        System.out.println("敏感词：" + words);
         System.out.println("个数：" + count_star(replace));
         System.out.println("总数：" + content.replaceAll("[^a-zA-Z0-9\\u4E00-\\u9FA5]", "").length());
         System.out.println("最大敏感值：" + maxSensitiveVal);
