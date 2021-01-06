@@ -22,6 +22,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -35,8 +41,8 @@
             <scope>test</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -67,10 +73,15 @@
             <artifactId>druid</artifactId>
             <version>1.1.23</version>
         </dependency>
+        <!--log4j2-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
-        <finalName>service-sensitive-detection</finalName>
+        <finalName>sensitive-detection</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

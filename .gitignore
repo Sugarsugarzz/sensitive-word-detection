@@ -22,4 +22,6 @@ gen/
 .idea
 *.iml
 out
+logs
+
 

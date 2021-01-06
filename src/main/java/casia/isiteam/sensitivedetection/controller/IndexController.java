@@ -7,6 +7,8 @@ import casia.isiteam.sensitivedetection.model.Sensitivity;
 import casia.isiteam.sensitivedetection.service.SensitiveWordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,12 +20,17 @@ import java.util.stream.Collectors;
 @Api(tags = "文本敏感度接口")
 public class IndexController {
 
+    private static final Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
+
     @Autowired
     SensitiveWordService sensitiveWordService;
 
     @PostMapping("/sensitive")
     @ApiOperation("敏感度检测与计算（非跳词版）")
     public Result index(@RequestParam("content") String content) {
+
+        logger.info("============== Request Incoming！！ ==============");
+
         // 获取敏感词
         List<SensitiveWord> allKeywords = sensitiveWordService.findAllKeywords();
         // 初始化检测器
@@ -40,15 +47,13 @@ public class IndexController {
         // 计算敏感值（ 最大敏感值 * 85% + 占比 * 15%）,保留两位小数
         double result = (double) Math.round((maxSensitiveVal * 0.85 + ratio * 100 * 0.15) * 100) / 100;
 
-        System.out.println("========================================");
-        System.out.println("待检测文本：" + content);
-        System.out.println("替换后文本：" + replace);
-        System.out.println("敏感词：" + words);
-        System.out.println("个数：" + count_star(replace));
-        System.out.println("总数：" + content.replaceAll("[^a-zA-Z0-9\\u4E00-\\u9FA5]", "").length());
-        System.out.println("最大敏感值：" + maxSensitiveVal);
-        System.out.println("占比：" + ratio);
-        System.out.println("========================================");
+        logger.info("待检测文本：" + content);
+        logger.info("敏感词：" + words);
+        logger.info("个数：" + count_star(replace));
+        logger.info("总数：" + content.replaceAll("[^a-zA-Z0-9\\u4E00-\\u9FA5]", "").length());
+        logger.info("最大敏感值：" + maxSensitiveVal);
+        logger.info("占比：" + ratio);
+        logger.info("================================================");
         return Result.success(new Sensitivity(content, replace, words, result));
     }
 
@@ -58,7 +63,9 @@ public class IndexController {
         return sensitiveWordService.findAllKeywords();
     }
 
-    /** 统计 * 的数量 */
+    /**
+     * 统计 * 的数量
+     */
     private double count_star(String replace) {
         double count = 0.0;
         for (int i = 0; i < replace.length(); i++)

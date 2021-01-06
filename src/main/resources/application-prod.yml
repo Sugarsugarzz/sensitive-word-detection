@@ -1,11 +1,11 @@
 server:
-  port: 9999
+  port: 7005
 
 spring:
   datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/work?useUnicode=true&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    username: bj
+    password: bj2016
+    url: jdbc:mysql://192.168.10.231:3307/gd_data?useSSL=false&useUnicode=true&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 mybatis:
