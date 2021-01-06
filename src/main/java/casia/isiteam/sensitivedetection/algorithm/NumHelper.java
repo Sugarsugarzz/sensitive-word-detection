@@ -10,19 +10,28 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NumHelper {
 
     public enum SerializableType {
-        /** 大小在-128~127之间的整数，占用空间为1字节 */
+        /**
+         * 大小在-128~127之间的整数，占用空间为1字节
+         */
         TINY_INT(1),
-        /** 大小在-32768~32767之间的整数，占用空间为2字节 */
+        /**
+         * 大小在-32768~32767之间的整数，占用空间为2字节
+         */
         SMALL_INT(2),
-        /** 大小在-8388608~8388607之间的整数，占用空间为3字节 */
+        /**
+         * 大小在-8388608~8388607之间的整数，占用空间为3字节
+         */
         MEDIUM_INT(3),
-        /** int类型 */
+        /**
+         * int类型
+         */
         INT(4),
         ;
 
         private final int flag;
 
         private static Map<Integer, SerializableType> typeMap;
+
         static {
             Map<Integer, SerializableType> tmpMap = new HashMap<>();
             for (SerializableType type : SerializableType.values()) {
@@ -30,6 +39,7 @@ public class NumHelper {
             }
             typeMap = tmpMap;
         }
+
         public static SerializableType getType(int flag) {
             return typeMap.get(flag);
         }
@@ -85,6 +95,7 @@ public class NumHelper {
     };
 
     private static final Map<SerializableType, Serializer> simpleWriterMap = new ConcurrentHashMap<>();
+
     static {
         simpleWriterMap.put(SerializableType.TINY_INT, tinyIntWriter);
         simpleWriterMap.put(SerializableType.SMALL_INT, smallIntWriter);
@@ -97,13 +108,13 @@ public class NumHelper {
         Serializer serializer;
         int typeFlag;
 
-        if(v >= -128 && v<= 127) {
+        if (v >= -128 && v <= 127) {
             serializer = simpleWriterMap.get(SerializableType.TINY_INT);
             typeFlag = SerializableType.TINY_INT.getFlag();
-        } else if(v >= -32768 && v <= 32767) {
+        } else if (v >= -32768 && v <= 32767) {
             serializer = simpleWriterMap.get(SerializableType.SMALL_INT);
             typeFlag = SerializableType.SMALL_INT.getFlag();
-        } else if(v >= -8388608 && v <= 8388607){
+        } else if (v >= -8388608 && v <= 8388607) {
             serializer = simpleWriterMap.get(SerializableType.MEDIUM_INT);
             typeFlag = SerializableType.MEDIUM_INT.getFlag();
         } else {
@@ -164,6 +175,7 @@ public class NumHelper {
     };
 
     private static final Map<SerializableType, Deserializer> simpleReaderMap = new ConcurrentHashMap<>();
+
     static {
         simpleReaderMap.put(SerializableType.TINY_INT, tinyIntReader);
         simpleReaderMap.put(SerializableType.SMALL_INT, smallIntReader);
@@ -176,7 +188,7 @@ public class NumHelper {
         SerializableType type = SerializableType.getType(flag);
         Deserializer deserializer = simpleReaderMap.get(type);
 
-        if(deserializer == null) {
+        if (deserializer == null) {
             throw new RuntimeException("wrong flag: " + flag);
         }
         return deserializer.deserialize(in);

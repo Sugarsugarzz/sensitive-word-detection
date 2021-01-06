@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class TrieNode2{
+public class TrieNode2 {
     public boolean End;
     public List<Integer> Results;
     public HashMap<Character, TrieNode2> m_values;
     private int minflag = Integer.MAX_VALUE;
     private int maxflag = 0;
 
-    public TrieNode2()
-    {
+    public TrieNode2() {
         Results = new ArrayList<Integer>();
         m_values = new HashMap<Character, TrieNode2>();
     }

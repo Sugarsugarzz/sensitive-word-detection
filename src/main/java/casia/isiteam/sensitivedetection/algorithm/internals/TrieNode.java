@@ -46,6 +46,6 @@ public class TrieNode implements Comparable<TrieNode> {
 
     @Override
     public int compareTo(final TrieNode o) {
-        return this.Layer - o.Layer  ;
+        return this.Layer - o.Layer;
     }
 }

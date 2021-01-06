@@ -12,8 +12,7 @@ public class TrieNode2Ex {
     public int minflag = Integer.MAX_VALUE;
     public int maxflag = 0;
 
-    public TrieNode2Ex()
-    {
+    public TrieNode2Ex() {
         Results = new ArrayList<Integer>();
         m_values = new HashMap<Integer, TrieNode2Ex>();
     }

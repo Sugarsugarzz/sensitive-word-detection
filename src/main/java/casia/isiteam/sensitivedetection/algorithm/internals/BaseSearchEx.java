@@ -110,7 +110,7 @@ public class BaseSearchEx {
             int l = NumHelper.read(br);
             byte[] bytes = new byte[l];
             br.read(bytes, 0, l);
-            _keywords[i] = new String(bytes,"utf-8");
+            _keywords[i] = new String(bytes, "utf-8");
         }
 
         length = NumHelper.read(br);

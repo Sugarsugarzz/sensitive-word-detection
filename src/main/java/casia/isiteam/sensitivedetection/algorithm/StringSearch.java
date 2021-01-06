@@ -10,7 +10,7 @@ import java.util.List;
 public class StringSearch extends BaseSearch {
     /**
      * 在文本中查找第一个关键字
-     * 
+     *
      * @param text 文本
      * @return
      */
@@ -40,7 +40,7 @@ public class StringSearch extends BaseSearch {
 
     /**
      * 在文本中查找所有的关键字
-     * 
+     *
      * @param text 文本
      * @return
      */
@@ -74,7 +74,7 @@ public class StringSearch extends BaseSearch {
 
     /**
      * 判断文本是否包含关键字
-     * 
+     *
      * @param text 文本
      * @return
      */
@@ -104,7 +104,7 @@ public class StringSearch extends BaseSearch {
 
     /**
      * 在文本中替换所有的关键字, 替换符默认为 *
-     * 
+     *
      * @return
      */
     public String Replace(String text) {
@@ -113,7 +113,7 @@ public class StringSearch extends BaseSearch {
 
     /**
      * 在文本中替换所有的关键字
-     * 
+     *
      * @param text        文本
      * @param replaceChar 替换符
      * @return

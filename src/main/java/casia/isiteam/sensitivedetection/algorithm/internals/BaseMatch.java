@@ -194,7 +194,7 @@ public class BaseMatch {
     }
 
     private void SeparateParameters(String keyword, StringBuilder stringBuilder,
-            Map<Integer, List<String>> parameterDict) throws Exception {
+                                    Map<Integer, List<String>> parameterDict) throws Exception {
         int index = 0;
         int parameterIndex = 0;
         Character zore = 0;
@@ -325,7 +325,7 @@ public class BaseMatch {
     }
 
     private static void KeywordBuild(Map<Integer, List<String>> parameterDict, int index, int end, String keyword,
-            List<String> result) {
+                                     List<String> result) {
         Character span = (char) 1;
         List<String> list = parameterDict.get(index);
         if (index == end) {
@@ -343,7 +343,7 @@ public class BaseMatch {
 
     /**
      * 设置关键字
-     * 
+     *
      * @param keywords 关键字列表
      * @throws Exception
      */

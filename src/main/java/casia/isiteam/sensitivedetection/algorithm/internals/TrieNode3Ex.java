@@ -15,8 +15,7 @@ public class TrieNode3Ex {
     public TrieNode3Ex WildcardNode;
 
 
-    public TrieNode3Ex()
-    {
+    public TrieNode3Ex() {
         Results = new ArrayList<Integer>();
         m_values = new HashMap<Character, TrieNode3Ex>();
     }

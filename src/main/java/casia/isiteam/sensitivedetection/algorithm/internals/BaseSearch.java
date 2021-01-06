@@ -12,7 +12,7 @@ public class BaseSearch {
 
     /**
      * 设置关键字
-     * 
+     *
      * @param keywords 关键字列表
      */
     public void SetKeywords(List<String> keywords) {

@@ -23,8 +23,7 @@ public class BaseMatchEx extends BaseMatch {
 
 
     @Override
-    protected   void SetKeywords2(List<String> keywords)
-    {
+    protected void SetKeywords2(List<String> keywords) {
         List<TrieNode> allNode = BuildFirstLayerTrieNode(keywords);
         TrieNode root = allNode.get(0);
 
@@ -38,9 +37,10 @@ public class BaseMatchEx extends BaseMatch {
 
         List<TrieNode3Ex> allNode2 = new ArrayList<TrieNode3Ex>();
         for (int i = 0; i < allNode.size(); i++) {
-            TrieNode3Ex node3=new TrieNode3Ex();
-            node3.Index=i;
-            allNode2.add(node3); ;
+            TrieNode3Ex node3 = new TrieNode3Ex();
+            node3.Index = i;
+            allNode2.add(node3);
+            ;
         }
 
         for (int i = 0; i < allNode2.size(); i++) {
@@ -52,10 +52,10 @@ public class BaseMatchEx extends BaseMatch {
                 int index = oldNode.m_values.get(item).Index;
                 if (key == 0) {
                     newNode.HasWildcard = true;
-                    newNode.WildcardNode = allNode2.get(index) ;
+                    newNode.WildcardNode = allNode2.get(index);
                     continue;
                 }
-                newNode.Add((char)key, allNode2.get(index) );
+                newNode.Add((char) key, allNode2.get(index));
             }
             for (int item : oldNode.Results) {
                 if (oldNode.IsWildcard) {
@@ -83,8 +83,8 @@ public class BaseMatchEx extends BaseMatch {
                         }
                         continue;
                     }
-                    if (newNode.HasKey((char)key) == false) {
-                        newNode.Add((char)key, allNode2.get(index));
+                    if (newNode.HasKey((char) key) == false) {
+                        newNode.Add((char) key, allNode2.get(index));
                     }
                 }
                 for (int item : failure.Results) {
@@ -108,7 +108,7 @@ public class BaseMatchEx extends BaseMatch {
         List<Integer> max = new ArrayList<Integer>();
         List<Integer> wildcard = new ArrayList<Integer>();
         List<Map<Integer, Integer>> nextIndexs = new ArrayList<Map<Integer, Integer>>();
-        List<Integer> end = new ArrayList<Integer>() ;
+        List<Integer> end = new ArrayList<Integer>();
         end.add(0);
         List<Integer> resultIndex = new ArrayList<Integer>();
         for (int i = 0; i < allNode2.size(); i++) {
@@ -125,7 +125,7 @@ public class BaseMatchEx extends BaseMatch {
 
             if (i > 0) {
                 for (Character item : node.m_values.keySet()) {
-                    dict.put((Integer)(int)(item) , node.m_values.get(item).Index);
+                    dict.put((Integer) (int) (item), node.m_values.get(item).Index);
                 }
             }
             for (int item : node.Results) {
@@ -152,7 +152,7 @@ public class BaseMatchEx extends BaseMatch {
             dictionary.SetDictionary(nextIndexs.get(i));
             _nextIndex[i] = dictionary;
         }
-        _wildcard= new int[wildcard.size()];
+        _wildcard = new int[wildcard.size()];
         for (int i = 0; i < wildcard.size(); i++) {
             _wildcard[i] = (int) (wildcard.get(i));
         }
@@ -194,5 +194,5 @@ public class BaseMatchEx extends BaseMatch {
         return dictionary.size();
     }
 
-    
+
 }

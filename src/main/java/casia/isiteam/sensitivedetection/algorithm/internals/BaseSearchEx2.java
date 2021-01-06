@@ -92,7 +92,7 @@ public abstract class BaseSearchEx2 {
             int l = NumHelper.read(br);
             byte[] bytes = new byte[l];
             br.read(bytes, 0, l);
-            _keywords[i] = new String(bytes,"utf-8");
+            _keywords[i] = new String(bytes, "utf-8");
         }
         length = NumHelper.read(br);
         _guides = new int[length][];
@@ -142,7 +142,7 @@ public abstract class BaseSearchEx2 {
 
     private void SetKeywords() {
         TrieNode root = new TrieNode();
-        Map<Integer,List<TrieNode>> allNodeLayers=new Hashtable<Integer,List<TrieNode>>();
+        Map<Integer, List<TrieNode>> allNodeLayers = new Hashtable<Integer, List<TrieNode>>();
         for (int i = 0; i < _keywords.length; i++) {
             String p = _keywords[i];
             TrieNode nd = root;
@@ -150,13 +150,14 @@ public abstract class BaseSearchEx2 {
                 nd = nd.Add(p.charAt(j));
                 if (nd.Layer == 0) {
                     nd.Layer = j + 1;
-                    if(allNodeLayers.containsKey(nd.Layer)==false){
-                        List<TrieNode> nodes=new ArrayList<TrieNode>();
+                    if (allNodeLayers.containsKey(nd.Layer) == false) {
+                        List<TrieNode> nodes = new ArrayList<TrieNode>();
                         nodes.add(nd);
                         allNodeLayers.put(nd.Layer, nodes);
-                    }else {
+                    } else {
                         allNodeLayers.get(nd.Layer).add(nd);
-                    }                }
+                    }
+                }
             }
             nd.SetResults(i);
         }
@@ -164,15 +165,15 @@ public abstract class BaseSearchEx2 {
         List<TrieNode> allNode = new ArrayList<TrieNode>();
         allNode.add(root);
         for (int i = 0; i < allNodeLayers.size(); i++) { //注意 这里不能用 keySet()
-            List<TrieNode> nodes = allNodeLayers.get(i+1);
+            List<TrieNode> nodes = allNodeLayers.get(i + 1);
             for (int j = 0; j < nodes.size(); j++) {
                 allNode.add(nodes.get(j));
             }
         }
         allNodeLayers.clear();
-        allNodeLayers=null;
+        allNodeLayers = null;
 
-        
+
         for (int i = 1; i < allNode.size(); i++) {
             TrieNode nd = allNode.get(i);
             nd.Index = i;
@@ -189,7 +190,7 @@ public abstract class BaseSearchEx2 {
             }
         }
         root.Failure = root;
- 
+
 
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i < allNode.size(); i++) {
@@ -258,7 +259,7 @@ public abstract class BaseSearchEx2 {
         _next = new int[length];
         _check = new int[length];
         List<Integer[]> guides = new ArrayList<Integer[]>();
-        guides.add(new Integer[] { 0 });
+        guides.add(new Integer[]{0});
         for (int i = 0; i < length; i++) {
             if (has[i] == null)
                 continue;

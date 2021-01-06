@@ -1,5 +1,6 @@
 package casia.isiteam.sensitivedetection;
 
+import casia.isiteam.sensitivedetection.algorithm.StringSearch;
 import casia.isiteam.sensitivedetection.model.SensitiveWord;
 import casia.isiteam.sensitivedetection.service.SensitiveWordService;
 import org.junit.jupiter.api.Test;

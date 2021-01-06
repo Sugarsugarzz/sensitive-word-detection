@@ -71,8 +71,8 @@ public class IntDictionary {
         return -1;
     }
 
-    public int GetValue(int index){
+    public int GetValue(int index) {
         return _values[index];
     }
- 
+
 }
