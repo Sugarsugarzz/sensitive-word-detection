@@ -15,7 +15,6 @@ public class FilterTest {
     /**
      * 调用测试
      */
-    @Test
     public void test() {
         String content = "哈哈 测试测试";
         System.out.println(replaceSpecWord(content));
