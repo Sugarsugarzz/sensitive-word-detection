@@ -53,6 +53,7 @@ public class IndexController {
         logger.info("总数：" + content.replaceAll("[^a-zA-Z0-9\\u4E00-\\u9FA5]", "").length());
         logger.info("最大敏感值：" + maxSensitiveVal);
         logger.info("占比：" + ratio);
+        logger.info("敏感度：" + result);
         logger.info("================================================");
         return Result.success(new Sensitivity(content, replace, words, result));
     }
